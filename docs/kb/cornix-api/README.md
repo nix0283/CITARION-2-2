@@ -1,99 +1,89 @@
-# 📚 Cornix API Knowledge Base
+# Cornix Trading Platform Documentation
 
-Cornix signal format and API integration documentation.
+> **Source:** https://help.cornix.io/
 
-**Files:** 225
+Automated crypto trading platform documentation for AI agent reference.
 
----
+## 📊 Statistics
 
-## 📁 Structure
+- **Total Articles:** 149
+- **Collections:** 12
+- **Last Updated:** March 2025
 
-```
-cornix-api/
-├── signal-format/          # Signal Parsing
-├── api-integration/        # REST API
-├── trading-functionalities/ # Feature API
-├── channel-admins/         # Channel API
-├── account-subscription/   # Account API
-├── getting-started/        # API Setup
-├── trading-bots/           # Bot API
-├── trading-configurations/ # Config API
-├── backtesting/            # Backtest API
-├── marketplace/            # Marketplace API
-├── demo-accounts/          # Demo API
-├── errors-notifications/   # Error Codes
-└── faqs-more/              # FAQ
-```
+## 📂 Sections
 
----
+### Getting Started
+- Register and set your account
+- Connect exchanges (Binance, Bybit, OKX, KuCoin, etc.)
+- First steps to auto trading
+- API key setup guides
 
-## 📡 Signal Format
+### Account & Subscription
+- Subscription plans and pricing
+- Free trial
+- Billing and usage
+- Upgrade/downgrade subscription
 
-### Standard Signal
-```
-BTCUSDT
-LONG
-Entry: 67000-67200
-TP1: 68000
-TP2: 69000
-SL: 66000
-Leverage: 10x
-```
+### Trading Bots
+- **Signals Bot** - Auto-trading from signal channels
+- **Grid Bot** - Grid trading strategy
+- **DCA Bot** - Dollar cost averaging
+- **TradingView Bot** - TradingView integration
 
-### Multi-Entry Signal
-```
-BTCUSDT LONG
+### Trading Configurations
+- Amount per trade
+- Leverage settings
+- Take profit / Stop loss
+- Trailing stops
+- Entry strategies
 
-Entry 1: 67000 (25%)
-Entry 2: 66500 (25%)
-Entry 3: 66000 (50%)
+### Demo Accounts
+- Risk-free trading experience
 
-TP1: 68000 (25%)
-TP2: 69000 (25%)
-TP3: 70000 (50%)
+### Backtesting
+- Historical data testing
+- Performance evaluation
 
-SL: 65000
-```
+### Marketplace
+- Signal providers
+- Performance statistics
+- Filters and reviews
 
----
+### Trading Functionalities
+- Trading terminal
+- Portfolio management
+- Manual trading
+- Trade history export
 
-## 🔌 API Endpoints
+### Channel Admins
+- Telegram channel integration
+- Discord integration
+- Signal parsing setup
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/v1/bots` | GET | List bots |
-| `/api/v1/bots/:id` | GET | Bot details |
-| `/api/v1/signals` | GET | Signal history |
-| `/api/v1/positions` | GET | Open positions |
-| `/api/v1/exchanges` | GET | Connected exchanges |
+### Errors & Notifications
+- Error messages explained
+- Notification types
+- Troubleshooting guides
 
----
+## 🔗 Official Links
 
-## ⚙️ Configuration
+- **Website:** https://cornix.io/
+- **Help Center:** https://help.cornix.io/
+- **Dashboard:** https://dashboard.cornix.io/
+- **Telegram:** https://t.me/cornix_announcements
 
-```json
-{
-  "botType": "DCA",
-  "symbol": "BTCUSDT",
-  "exchange": "binance",
-  "leverage": 10,
-  "maxPositions": 3,
-  "takeProfit": 5,
-  "stopLoss": 3,
-  "trailingStop": {
-    "enabled": true,
-    "percent": 2
-  }
-}
-```
+## Supported Exchanges
+
+- Binance (Spot & Futures)
+- Bybit (Spot & Futures)
+- OKX (Spot & Futures)
+- KuCoin (Spot & Futures)
+- BingX
+- Bitget
+- Coinbase
+- Hyperliquid
+- And more...
 
 ---
 
-## 🔗 Links
-
-- [Cornix API](https://cornix.io/api)
-- [Signal Providers](https://cornix.io/marketplace)
-
----
-
-*Part of CITARION Knowledge Base*
+*Documentation scraped from help.cornix.io for AI agent reference*

@@ -176,6 +176,11 @@ Cornix trading bot platform documentation:
 - Channel admin API
 - Trading functionalities
 
+### Example Folders (8 examples)
+- `Cornix_bot_control_telegram-example` - Bot control via Telegram
+- `Cornix_notifications-example` - Notification formats
+- `Cornix_trading_channel-example1-6` - Trading channel signal formats
+
 ---
 
 ## 📖 Usage
