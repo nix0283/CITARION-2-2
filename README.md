@@ -1567,6 +1567,19 @@ REDIS_URL="redis://localhost:6379"
 
 ## 📚 Documentation
 
+### Knowledge Base (3,933 Files)
+
+External documentation from trading platforms, exchanges, and charting libraries:
+
+| Knowledge Base | Files | Description |
+|----------------|-------|-------------|
+| **[Binance API](docs/kb/binance/)** | 271 | Complete Binance API (Spot, Futures, Options, Margin, SDK) |
+| **[TradingView](docs/kb/tradingview/)** | 2,980 | Platform widgets, chart features, screeners |
+| **[Pine Script](docs/kb/pine-script/)** | 72 | Pine Script language reference |
+| **[Lightweight Charts](docs/kb/lightweight-charts/)** | 76 | Charting library documentation |
+| **[Cornix](docs/kb/cornix/)** | 237 | Trading bot platform |
+| **[Cornix API](docs/kb/cornix-api/)** | 225 | Signal format and API integration |
+
 ### Backend Documentation (100% Coverage ✅)
 - [Backend API Reference](docs/backend/BACKEND_API_REFERENCE.md) - 120+ API endpoints
 - [Bot Engine Reference](docs/backend/BOT_ENGINE_REFERENCE.md) - 17+ trading bots
@@ -1594,7 +1607,7 @@ REDIS_URL="redis://localhost:6379"
 - [Risk Models Documentation](docs/business-logic/RISK_MODELS_DOCUMENTATION.md)
 
 ### Full Documentation Index
-See [docs/README.md](docs/README.md) for complete documentation index (170+ documents).
+See [docs/README.md](docs/README.md) for complete documentation index (4,000+ documents).
 
 ---
 
