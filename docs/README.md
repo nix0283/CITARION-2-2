@@ -75,6 +75,7 @@ Trading bot documentation.
 | [ORION_BOT.md](bots/ORION_BOT.md) | Trend detection bot |
 | [FREQUENCY_BOTS.md](bots/FREQUENCY_BOTS.md) | HFT, MFT, LFT bots |
 | [BOT_ACTIVATION.md](bots/BOT_ACTIVATION.md) | Bot activation guide |
+| [VISION_V2.md](bots/VISION_V2.md) | **Vision V2 with online learning** |
 
 ### 🔧 Microservices (`microservices/`)
 Microservice architecture and APIs.
@@ -272,6 +273,10 @@ User interface component documentation.
 | [RESPONSIVE_DESIGN.md](components/RESPONSIVE_DESIGN.md) | Mobile/tablet/desktop |
 | [POSITIONS_TRADES_SIGNALS.md](components/POSITIONS_TRADES_SIGNALS.md) | Positions, trades, signals |
 | [ANALYTICS_DASHBOARD.md](components/ANALYTICS_DASHBOARD.md) | PnL & ML analytics |
+| [AI_RISK_PANEL.md](components/AI_RISK_PANEL.md) | **AI Risk Manager with anomaly detection** |
+| [SHARE_FEATURES.md](components/SHARE_FEATURES.md) | **Share cards for social media** |
+| [HELP_CENTER.md](components/HELP_CENTER.md) | **Help panel, FAQ, documentation** |
+| [ADDITIONAL_COMPONENTS_COMPLETE.md](components/ADDITIONAL_COMPONENTS_COMPLETE.md) | **Complete component coverage** |
 
 ### 🔒 Security (`security/`)
 Security documentation.
@@ -375,9 +380,13 @@ Historical documents and reports.
 - types/README.md (**All TypeScript interfaces**)
 - components/README.md (**All UI components**)
 - components/ADDITIONAL_COMPONENTS_COMPLETE.md (**15+ additional panels**)
+- components/AI_RISK_PANEL.md (**AI Risk Manager**)
+- components/SHARE_FEATURES.md (**Share cards**)
+- components/HELP_CENTER.md (**Help panel**)
 - skills/README.md (**18 AI skills**)
 - examples/README.md (**WebSocket examples**)
 - integrations/IAF_SERVICE.md (**IAF Python service**)
+- bots/VISION_V2.md (**Vision V2 online learning**)
 
 ---
 
@@ -576,15 +585,17 @@ find docs -name "*.md" | sort
 
 | Metric | Value |
 |--------|-------|
-| Total Documents | 180+ |
+| Total Documents | 190+ |
 | Core Documents | 100% coverage |
-| Total Lines | ~50,000+ |
+| Total Lines | ~60,000+ |
 | Languages | TypeScript, Python, SQL, Go |
 | Categories | 25 |
 | Hooks Documented | 14 (100%) |
 | Types Documented | 18+ interfaces (100%) |
 | Store Slices Documented | 7 (100%) |
 | Skills Documented | 18 (100%) |
+| Bot Types Documented | 17+ (100%) |
+| UI Components Documented | 170+ (100%) |
 
 ---
 
