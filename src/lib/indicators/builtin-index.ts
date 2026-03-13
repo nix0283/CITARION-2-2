@@ -1,6 +1,6 @@
 /**
  * Built-in Indicators - Main Export
- * 
+ *
  * Aggregates all indicator categories into a single export
  */
 
@@ -10,6 +10,7 @@ import { OSCILLATOR_INDICATORS } from './builtin-oscillators';
 import { VOLATILITY_INDICATORS } from './builtin-volatility';
 import { VOLUME_INDICATORS } from './builtin-volume';
 import { PIVOT_INDICATORS } from './builtin-pivot';
+import { DEPTH_INDICATORS } from './builtin-depth';
 
 // Re-export types
 export type { BuiltInIndicator, IndicatorCategory, IndicatorInput, IndicatorOutput } from './builtin-types';
@@ -20,6 +21,7 @@ export { OSCILLATOR_INDICATORS } from './builtin-oscillators';
 export { VOLATILITY_INDICATORS } from './builtin-volatility';
 export { VOLUME_INDICATORS } from './builtin-volume';
 export { PIVOT_INDICATORS } from './builtin-pivot';
+export { DEPTH_INDICATORS } from './builtin-depth';
 
 // Combined array of all built-in indicators
 export const BUILTIN_INDICATORS: BuiltInIndicator[] = [
@@ -28,6 +30,7 @@ export const BUILTIN_INDICATORS: BuiltInIndicator[] = [
   ...VOLATILITY_INDICATORS,
   ...VOLUME_INDICATORS,
   ...PIVOT_INDICATORS,
+  ...DEPTH_INDICATORS,
 ];
 
 // Helper to get indicators by category

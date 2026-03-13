@@ -43,6 +43,9 @@ import { useTradingHotkeys, HOTKEYS_HELP } from "@/hooks/use-trading-hotkeys";
 import { OneClickTradingDialog, type OneClickTradeParams, type OneClickTradingConfig } from "@/components/chart/one-click-trading";
 import { useOrderMarkers, type OrderMarker, type ProcessedMarker } from "@/components/chart/order-markers";
 import { usePriceContext } from "@/components/providers/price-provider";
+import { CandlestickPatternsPanel, createPatternMarkers, type PatternMarker } from "@/components/chart/candlestick-patterns-panel";
+import { TradingModeSwitch, type TradingMode, type TradingModeConfig } from "@/components/trading/trading-mode-switch";
+import { scanCandlestickPatterns, type PatternScannerResult } from "@/lib/wolfbot/candlestick-patterns";
 
 // Timeframes
 const TIMEFRAMES = [
@@ -198,7 +201,7 @@ export function PriceChart() {
   const [oneClickEnabled, setOneClickEnabled] = useState(false);
   const [oneClickDialogOpen, setOneClickDialogOpen] = useState(false);
   const [oneClickParams, setOneClickParams] = useState<OneClickTradeParams | null>(null);
-  
+
   // Use useMemo to prevent recreating config object on every render
   const oneClickConfig: OneClickTradingConfig = useMemo(() => ({
     enabled: oneClickEnabled,
@@ -208,6 +211,16 @@ export function PriceChart() {
     showConfirmation: true,
     quickSizes: [1, 5, 10, 25, 50, 100],
   }), [oneClickEnabled]);
+
+  // Candlestick patterns state
+  const [showPatternMarkers, setShowPatternMarkers] = useState(true);
+  const [patternMarkers, setPatternMarkers] = useState<PatternMarker[]>([]);
+  const [patternResult, setPatternResult] = useState<PatternScannerResult | null>(null);
+  const [minPatternConfidence, setMinPatternConfidence] = useState(0.5);
+
+  // Trading mode state
+  const [tradingMode, setTradingMode] = useState<TradingMode>('manual');
+  const [tradingModeConfig, setTradingModeConfig] = useState<TradingModeConfig | null>(null);
 
   // Use useMemo for hotkeys config
   const hotkeysConfig = useMemo(() => ({ enabled: true }), []);
@@ -1365,9 +1378,29 @@ export function PriceChart() {
       {showIndicatorsPanel && (
         <div className="w-[280px] border-l border-border bg-card/30 flex flex-col">
           <div className="p-3 border-b border-border">
-            <h3 className="text-sm font-medium">Индикаторы</h3>
+            <h3 className="text-sm font-medium">Панель анализа</h3>
           </div>
-          <div className="flex-1 overflow-y-auto p-2">
+          <div className="flex-1 overflow-y-auto p-2 space-y-2">
+            {/* Trading Mode Switch */}
+            <TradingModeSwitch
+              currentMode={tradingMode}
+              config={tradingModeConfig || undefined}
+              onModeChange={setTradingMode}
+              onConfigChange={setTradingModeConfig}
+              compact={false}
+              showSettings={true}
+            />
+
+            {/* Candlestick Patterns Panel */}
+            <CandlestickPatternsPanel
+              candles={candles}
+              showMarkers={showPatternMarkers}
+              minConfidence={minPatternConfidence}
+              onPatternsDetected={setPatternResult}
+              onMarkersChange={setPatternMarkers}
+            />
+
+            {/* Indicators Panel */}
             <IndicatorsPanel onIndicatorsChange={handleIndicatorsChange} />
           </div>
         </div>
