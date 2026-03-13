@@ -2,7 +2,7 @@
 
 External documentation from trading platforms, exchanges, and charting libraries.
 
-**Total Files:** 3,933 markdown documents
+**Total Files:** 4,677 documents (markdown, images, HTML)
 
 ---
 
@@ -10,11 +10,11 @@ External documentation from trading platforms, exchanges, and charting libraries
 
 | Knowledge Base | Files | Source |
 |----------------|-------|--------|
-| **Binance API** | 271 | [binance-docs](https://binance-docs.github.io/apidocs/) |
-| **TradingView** | 2,980 | [tradingview.com](https://www.tradingview.com/) |
+| **Binance API** | 503 | [binance-docs](https://binance-docs.github.io/apidocs/) |
+| **TradingView** | 2,985 | [tradingview.com](https://www.tradingview.com/) |
 | **Pine Script** | 72 | [pine-script-docs](https://www.tradingview.com/pine-script-docs/) |
-| **Lightweight Charts** | 76 | [lightweight-charts](https://tradingview.github.io/lightweight-charts/) |
-| **Cornix** | 237 | [cornix.io](https://cornix.io/) |
+| **Lightweight Charts** | 120 | [lightweight-charts](https://tradingview.github.io/lightweight-charts/) |
+| **Cornix** | 699 | [cornix.io](https://cornix.io/) |
 | **Cornix API** | 225 | Cornix API documentation |
 
 ---
@@ -23,7 +23,7 @@ External documentation from trading platforms, exchanges, and charting libraries
 
 ```
 kb/
-├── binance/              # Binance Exchange API (271 files)
+├── binance/              # Binance Exchange API (503 files)
 │   ├── spot/            # Spot trading API
 │   ├── futures/         # USDT-M & Coin-M futures
 │   ├── options/         # European options
@@ -31,12 +31,13 @@ kb/
 │   ├── python/          # Python SDK
 │   └── ...
 │
-├── tradingview/          # TradingView Platform (2,980 files)
+├── tradingview/          # TradingView Platform (2,985 files)
 │   ├── Widgets/         # All widgets
 │   ├── chart/           # Chart features
 │   ├── indicators/      # Built-in indicators
 │   ├── trading/         # Trading features
 │   ├── screener/        # Screener tools
+│   ├── financials/      # Financial data
 │   └── ...
 │
 ├── pine-script/          # Pine Script Language (72 files)
@@ -46,16 +47,18 @@ kb/
 │   ├── Visuals/         # Visual elements
 │   └── Errors/          # Error reference
 │
-├── lightweight-charts/   # Lightweight Charts (76 files)
+├── lightweight-charts/   # Lightweight Charts (120 files)
 │   ├── docs/            # API docs
 │   ├── tutorials/       # Tutorials
-│   └── plugins/         # Plugin docs
+│   └── indicator-examples/
 │
-├── cornix/               # Cornix Bot Platform (237 files)
+├── cornix/               # Cornix Bot Platform (699 files)
 │   ├── getting-started/ # Quick start
 │   ├── trading-bots/    # Bot types
 │   ├── backtesting/     # Backtesting
-│   └── ...
+│   ├── Cornix_trading_channel-example1-6/  # Signal examples
+│   ├── Cornix_notifications-example/       # Notification formats
+│   └── Cornix_bot_control_telegram-example/ # Telegram bot control
 │
 └── cornix-api/           # Cornix API (225 files)
     ├── signal-format/   # Signal parsing

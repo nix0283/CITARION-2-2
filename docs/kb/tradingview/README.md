@@ -1,95 +1,68 @@
-# 📚 TradingView Knowledge Base
+# TradingView Knowledge Base
 
-TradingView platform documentation.
+Complete TradingView platform documentation with 2,922+ markdown files.
 
-**Files:** 2,980
+## 📂 Categories
 
----
+### 📊 Charts & Data
+| Category | Files | Description |
+|----------|-------|-------------|
+| [chart](./chart/) | 262 | Chart types, settings, and customization |
+| [data](./data/) | 365 | Data sources, symbol information, timeframes |
+| [drawings](./drawings/) | 80 | Drawing tools and annotations |
+| [curves](./curves/) | 11 | Curve tools and configurations |
 
-## 📁 Structure
+### 📈 Analysis & Indicators
+| Category | Files | Description |
+|----------|-------|-------------|
+| [indicators](./indicators/) | 271 | Built-in and custom indicators |
+| [strategies](./strategies/) | 205 | Trading strategies and backtesting |
+| [financials](./financials/) | 1,002 | Financial statements and analysis |
+| [heatmap](./heatmap/) | 15 | Heat map visualizations |
 
-```
-tradingview/
-├── Widgets/           # TradingView Widgets
-│   ├── advanced-chart/
-│   ├── mini-chart/
-│   ├── heatmap/
-│   ├── screener/
-│   └── ...
-├── chart/             # Chart Features
-├── indicators/        # Built-in Indicators
-├── drawings/          # Drawing Tools
-├── trading/           # Trading Panel
-├── screener/          # Stock/Crypto Screeners
-├── alerts/            # Alert System
-├── portfolio/         # Portfolio Management
-├── strategies/        # Strategy Testing
-├── data/              # Data & Exchanges
-├── heatmap/           # Heatmaps
-├── news/              # News Integration
-├── mobileApps/        # Mobile Apps
-├── desktop/           # Desktop App
-└── profileSettings/   # Profile & Settings
-```
+### 🔔 Trading & Alerts
+| Category | Files | Description |
+|----------|-------|-------------|
+| [trading](./trading/) | 190 | Trading panel, orders, positions |
+| [alerts](./alerts/) | 59 | Alert creation and management |
+| [portfolio](./portfolio/) | 89 | Portfolio management |
 
----
+### 🛠️ Tools & Features
+| Category | Files | Description |
+|----------|-------|-------------|
+| [screener](./screener/) | 94 | Stock and crypto screeners |
+| [watchlist](./watchlist/) | 39 | Watchlist management |
+| [news](./news/) | 25 | News feed and analysis |
 
-## 🎨 Widgets
+### 📱 Platforms
+| Category | Files | Description |
+|----------|-------|-------------|
+| [desktop](./desktop/) | 47 | Desktop app features |
+| [mobileApps](./mobileApps/) | 49 | Mobile app documentation |
 
-### Advanced Chart Widget
-```html
-<script src="https://s3.tradingview.com/tv.js"></script>
-<div class="tradingview-widget-container">
-  <div id="tradingview_chart"></div>
-  <script>
-    new TradingView.widget({
-      "symbol": "BINANCE:BTCUSDT",
-      "interval": "1H",
-      "theme": "dark"
-    });
-  </script>
-</div>
-```
+### 💻 Pine Script
+| Category | Files | Description |
+|----------|-------|-------------|
+| [pine](./pine/) | 55 | Pine Script integration |
+| [pineSeeds](./pineSeeds/) | 20 | Pine Script examples |
 
-### Available Widgets
-- Advanced Chart
-- Mini Chart
-- Market Heatmap
-- Crypto Coins Heatmap
-- Stock Heatmap
-- Screener
-- Market Overview
-- Ticker
-- Ticker Tape
-- Symbol Info
-- Company Profile
-- Fundamental Data
-- Top Stories
-- Technical Analysis
-- Single Ticker
+### 🧩 Widgets
+| Category | Files | Description |
+|----------|-------|-------------|
+| [Widgets](./Widgets/) | 58 | Embeddable widget documentation |
+
+### ⚙️ Settings
+| Category | Files | Description |
+|----------|-------|-------------|
+| [profileSettings](./profileSettings/) | 41 | Profile and account settings |
+| [Keyboard_shortcuts](./Keyboard_shortcuts/) | 2 | Keyboard shortcuts reference |
+
+## 📊 Statistics
+
+- **Total Files:** 2,980+
+- **Categories:** 21
+- **Source:** [TradingView Documentation](https://www.tradingview.com/support/)
 
 ---
 
-## 📊 Features
-
-| Feature | Description |
-|---------|-------------|
-| **Charts** | 12+ chart types, multi-timeframe |
-| **Indicators** | 100+ built-in indicators |
-| **Drawings** | Trend lines, Fib, Gann, etc. |
-| **Alerts** | Price, indicator, webhook |
-| **Screeners** | Stock, crypto, forex |
-| **Strategies** | Pine Script backtesting |
-| **Social** | Ideas, comments, following |
-
----
-
-## 🔗 Links
-
-- [TradingView](https://www.tradingview.com/)
-- [Widget Docs](https://www.tradingview.com/widget-docs/)
-- [Charting Library](https://www.tradingview.com/charting-library-docs/)
-
----
-
-*Part of CITARION Knowledge Base*
+[← Back to Docs](../README.md)

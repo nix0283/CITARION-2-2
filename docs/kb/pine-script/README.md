@@ -1,77 +1,43 @@
-# 📚 Pine Script Knowledge Base
+# Pine Script Knowledge Base
 
-Pine Script programming language reference for TradingView indicators.
+Complete Pine Script programming language reference with 72+ markdown files.
 
-**Files:** 72
+## 📂 Categories
 
----
+### 📖 Language Reference
+| Category | Files | Description |
+|----------|-------|-------------|
+| [Language](./Language/) | 16 | Language fundamentals and syntax |
+| [Concepts](./Concepts/) | 13 | Core programming concepts |
+| [Writing](./Writing/) | 5 | Writing scripts best practices |
 
-## 📁 Structure
+### 🎨 Visual Elements
+| Category | Files | Description |
+|----------|-------|-------------|
+| [Visuals](./Visuals/) | 11 | Plotting, drawing, visual outputs |
 
-```
-pine-script/
-├── Language/          # Language Reference
-├── Concepts/          # Core Concepts
-├── Visuals/           # Visual Elements
-├── Writing/           # Writing Guides
-├── Migration/         # Version Migration
-├── Release/           # Release Notes
-├── Errors/            # Error Reference
-└── FAQ/               # Frequently Asked Questions
-```
+### ⚠️ Errors & Issues
+| Category | Files | Description |
+|----------|-------|-------------|
+| [Errors](./Errors/) | 4 | Error messages and troubleshooting |
 
----
+### 🔄 Updates
+| Category | Files | Description |
+|----------|-------|-------------|
+| [Migration](./Migration/) | 6 | Version migration guides |
+| [Release](./Release/) | 1 | Release notes and changelogs |
 
-## 🎯 Key Concepts
+### ❓ Help
+| Category | Files | Description |
+|----------|-------|-------------|
+| [FAQ](./FAQ/) | 13 | Frequently asked questions |
 
-### Script Structure
-```pine
-//@version=5
-indicator("My Indicator", overlay=true)
+## 📊 Statistics
 
-// Input parameters
-length = input.int(14, "Length")
-
-// Calculation
-rsiValue = ta.rsi(close, length)
-
-// Plot
-plot(rsiValue, "RSI", color=color.blue)
-```
-
-### Available Namespaces
-
-| Namespace | Description |
-|-----------|-------------|
-| `ta.` | Technical Analysis |
-| `math.` | Mathematical functions |
-| `str.` | String operations |
-| `array.` | Array operations |
-| `matrix.` | Matrix operations |
-| `map.` | Key-value maps |
-| `request.` | External data |
-| `chart.` | Chart display |
-| `input.` | User inputs |
-| `strategy.` | Strategy testing |
+- **Total Files:** 72+
+- **Categories:** 8
+- **Source:** [Pine Script Documentation](https://www.tradingview.com/pine-script-docs/)
 
 ---
 
-## 📊 Indicator Types
-
-| Type | Description |
-|------|-------------|
-| `indicator` | Overlay or pane indicator |
-| `strategy` | Backtestable strategy |
-| `library` | Reusable code module |
-
----
-
-## 🔗 Links
-
-- [Pine Script Docs](https://www.tradingview.com/pine-script-docs/)
-- [Pine Script Reference](https://www.tradingview.com/pine-script-reference/)
-- [Pine Script v5 Migration](https://www.tradingview.com/pine-script-docs/en/v5/migration_guide.html)
-
----
-
-*Part of CITARION Knowledge Base*
+[← Back to Docs](../README.md)
