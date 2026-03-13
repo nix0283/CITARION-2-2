@@ -681,7 +681,7 @@ export function scanCandlestickPatterns(candles: Candle[]): PatternScannerResult
   
   // Single candle patterns
   patterns.push(
-    Doji(current, avgBody),
+    ...[Doji(current, avgBody),
     DragonflyDoji(current),
     GravestoneDoji(current),
     Hammer(current, avgBody),
@@ -689,29 +689,26 @@ export function scanCandlestickPatterns(candles: Candle[]): PatternScannerResult
     HangingMan(current, prev, avgBody),
     ShootingStar(current, prev, avgBody),
     Marubozu(current),
-    SpinningTop(current, avgBody)
-  ).filter(Boolean) as PatternResult[];
+    SpinningTop(current, avgBody)].filter(Boolean) as PatternResult[]);
   
   // Two candle patterns
   patterns.push(
-    BullishEngulfing(current, prev),
+    ...[BullishEngulfing(current, prev),
     BearishEngulfing(current, prev),
     TweezerTop(current, prev),
     TweezerBottom(current, prev),
     PiercingLine(current, prev),
-    DarkCloudCover(current, prev)
-  ).filter(Boolean) as PatternResult[];
+    DarkCloudCover(current, prev)].filter(Boolean) as PatternResult[]);
   
   // Three candle patterns
   patterns.push(
-    MorningStar(candles),
+    ...[MorningStar(candles),
     EveningStar(candles),
     ThreeWhiteSoldiers(candles),
     ThreeBlackCrows(candles),
     ThreeInsideUp(candles),
     ThreeInsideDown(candles),
-    TriStar(candles)
-  ).filter(Boolean) as PatternResult[];
+    TriStar(candles)].filter(Boolean) as PatternResult[]);
   
   // Find strongest pattern
   const sortedPatterns = patterns.sort((a, b) => b.confidence - a.confidence);
