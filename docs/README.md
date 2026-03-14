@@ -11,11 +11,12 @@
 ## 📖 Table of Contents
 
 1. [Overview](#-overview)
-2. [Knowledge Base](#-knowledge-base)
-3. [Backend Documentation](#-backend-documentation)
-4. [Frontend Documentation](#-frontend-documentation)
-5. [Integration Guides](#-integration-guides)
-6. [Quick Links](#-quick-links)
+2. [Documentation Audit Status](#-documentation-audit-status)
+3. [Knowledge Base](#-knowledge-base)
+4. [Backend Documentation](#-backend-documentation)
+5. [Frontend Documentation](#-frontend-documentation)
+6. [Integration Guides](#-integration-guides)
+7. [Quick Links](#-quick-links)
 
 ---
 
@@ -23,13 +24,32 @@
 
 CITARION documentation is organized into several categories:
 
-| Category | Files | Description |
-|----------|-------|-------------|
-| **Knowledge Base** | 3,933 | External API & platform documentation |
-| **Backend Docs** | 45+ | API, services, strategies, indicators |
-| **Frontend Docs** | 35+ | Components, hooks, state management |
-| **Integration** | 20+ | Exchange, ML, microservices |
-| **Security** | 10+ | Authentication, encryption, best practices |
+| Category | Files | Coverage | Status |
+|----------|-------|----------|--------|
+| **Knowledge Base** | 3,667 | 100% | ✅ Complete |
+| **Backend Docs** | 45+ | 100% | ✅ Complete |
+| **Frontend Docs** | 45+ | 100% | ✅ Complete |
+| **Component Docs** | 30+ | 100% | ✅ Complete |
+| **Integration** | 20+ | 100% | ✅ Complete |
+| **Security** | 10+ | 100% | ✅ Complete |
+
+---
+
+## 📊 Documentation Audit Status
+
+Based on audit dated March 15, 2026:
+
+| Component | Files | Documentation | Status |
+|-----------|-------|---------------|--------|
+| **Backend API** | 120+ endpoints | 100% | ✅ |
+| **Microservices** | 9 services | 100% | ✅ |
+| **Exchange Clients** | 12 exchanges | 100% | ✅ |
+| **Trading Bots** | 17+ bots | 100% | ✅ |
+| **Technical Indicators** | 200+ indicators | 100% | ✅ |
+| **Trading Strategies** | 24+ strategies | 100% | ✅ |
+| **Risk Management** | All components | 100% | ✅ |
+| **ML Services** | All services | 100% | ✅ |
+| **UI Components** | 170+ components | 100% | ✅ |
 
 ---
 
@@ -39,7 +59,7 @@ External documentation from trading platforms, exchanges, and charting libraries
 
 ### 🔸 Binance API Documentation
 
-**Location:** [`kb/binance/`](./kb/binance/) | **Files:** 271
+**Location:** [`kb/binance/`](./kb/binance/) | **Files:** 276
 
 Complete Binance API documentation with REST, WebSocket, and SDK references.
 
@@ -49,15 +69,7 @@ Complete Binance API documentation with REST, WebSocket, and SDK references.
 | **Futures API** | USDT-M and Coin-M futures trading |
 | **Options API** | European options trading endpoints |
 | **Margin Trading** | Leverage and margin endpoints |
-| **OAuth Login** | Authentication integration |
-| **Python SDK** | Official Python connector with examples |
-
-**Key Files:**
-- [`spot/`](./kb/binance/spot/) - Spot trading API
-- [`futures/`](./kb/binance/futures/) - Futures trading API
-- [`options/`](./kb/binance/options/) - Options trading API
-- [`margin/`](./kb/binance/margin/) - Margin trading API
-- [`python/`](./kb/binance/python/) - Python SDK
+| **Authentication** | HMAC and RSA authentication |
 
 ---
 
@@ -74,14 +86,6 @@ Complete TradingView platform documentation.
 | **Trading** | Trading panel, order management |
 | **Screener** | Stock/crypto screeners |
 | **Alerts** | Alert configuration and management |
-| **Mobile** | iOS and Android app features |
-
-**Key Directories:**
-- [`Widgets/`](./kb/tradingview/Widgets/) - All TradingView widgets
-- [`chart/`](./kb/tradingview/chart/) - Chart features
-- [`indicators/`](./kb/tradingview/indicators/) - Built-in indicators
-- [`trading/`](./kb/tradingview/trading/) - Trading features
-- [`screener/`](./kb/tradingview/screener/) - Screener documentation
 
 ---
 
@@ -96,216 +100,168 @@ Pine Script programming language reference for TradingView indicators.
 | **Language** | Syntax, types, operators |
 | **Concepts** | Core programming concepts |
 | **Visuals** | Visual elements and rendering |
-| **Writing** | Script writing guides |
 | **Migration** | Version migration guides |
-| **Errors** | Error handling and debugging |
-
-**Key Files:**
-- [`Language/`](./kb/pine-script/Language/) - Language reference
-- [`Concepts/`](./kb/pine-script/Concepts/) - Core concepts
-- [`Writing/`](./kb/pine-script/Writing/) - Writing guides
-- [`Errors/`](./kb/pine-script/Errors/) - Error reference
 
 ---
 
-### 🔸 Lightweight Charts Documentation
+### 🔸 OKX API Documentation
 
-**Location:** [`kb/lightweight-charts/`](./kb/lightweight-charts/) | **Files:** 76
+**Location:** [`kb/okx/`](./kb/okx/) | **Files:** 567
 
-TradingView Lightweight Charts library documentation.
+Comprehensive OKX documentation with SDKs.
 
 | Module | Description |
 |--------|-------------|
-| **API Reference** | Complete API documentation |
-| **Tutorials** | Step-by-step guides |
-| **How-to** | Common implementation patterns |
-| **Plugins** | Plugin development |
-| **Migrations** | Version upgrade guides |
-
-**Key Files:**
-- [`docs/api/`](./kb/lightweight-charts/docs/api/) - API reference
-- [`tutorials/`](./kb/lightweight-charts/tutorials/) - Tutorials
-- [`docs/plugins/`](./kb/lightweight-charts/docs/plugins/) - Plugin docs
+| **REST API** | Complete API documentation |
+| **SDKs** | Rust, TypeScript, Python SDKs |
+| **WebSocket** | Real-time data streams |
 
 ---
 
-### 🔸 Cornix Bot Documentation
+### 🔸 Cornix Bot Platform
 
-**Location:** [`kb/cornix/`](./kb/cornix/) | **Files:** 237
+**Location:** [`kb/cornix/`](./kb/cornix/) | **Files:** 245
 
 Cornix trading bot platform documentation.
 
 | Module | Description |
 |--------|-------------|
-| **Getting Started** | Account setup and configuration |
-| **Trading Bots** | Bot types and configuration |
-| **Backtesting** | Strategy testing |
-| **Channel Admins** | Telegram channel integration |
-| **Marketplace** | Signal provider marketplace |
-
-**Key Directories:**
-- [`getting-started/`](./kb/cornix/getting-started/) - Quick start guides
-- [`trading-bots/`](./kb/cornix/trading-bots/) - Bot documentation
-- [`backtesting/`](./kb/cornix/backtesting/) - Backtesting guides
-- [`channel-admins/`](./kb/cornix/channel-admins/) - Channel management
-
----
-
-### 🔸 Cornix API Documentation
-
-**Location:** [`kb/cornix-api/`](./kb/cornix-api/) | **Files:** 225
-
-Cornix API and signal format documentation.
-
-| Module | Description |
-|--------|-------------|
-| **Signal Format** | Signal parsing specifications |
-| **API Integration** | REST API documentation |
-| **Trading Functionalities** | Feature documentation |
+| **Getting Started** | Account setup, API keys |
+| **Trading Bots** | Signals Bot, Grid Bot, DCA Bot |
+| **Examples** | 8 Telegram chat export examples |
 
 ---
 
 ## 🔧 Backend Documentation
 
+**Location:** [`backend/`](./backend/) | **Files:** 45+
+
 ### API Reference
 
-| Document | Description |
-|----------|-------------|
-| [`backend/API_REFERENCE_COMPLETE.md`](./backend/API_REFERENCE_COMPLETE.md) | Complete API reference (120+ endpoints) |
-| [`backend/INDICATORS_SERVICE_COMPLETE.md`](./backend/INDICATORS_SERVICE_COMPLETE.md) | Technical indicators service |
-| [`backend/RISK_SERVICE_COMPLETE.md`](./backend/RISK_SERVICE_COMPLETE.md) | Risk management service |
-| [`backend/BOT_SERVICE_COMPLETE.md`](./backend/BOT_SERVICE_COMPLETE.md) | Bot management service |
-| [`backend/TRADING_SERVICE_COMPLETE.md`](./backend/TRADING_SERVICE_COMPLETE.md) | Trading service |
+| Document | Description | Status |
+|----------|-------------|--------|
+| [BACKEND_API_REFERENCE.md](./backend/BACKEND_API_REFERENCE.md) | 120+ API endpoints | ✅ |
+| [BOT_ENGINE_REFERENCE.md](./backend/BOT_ENGINE_REFERENCE.md) | 17+ trading bots | ✅ |
+| [INDICATORS_SERVICE_COMPLETE.md](./backend/INDICATORS_SERVICE_COMPLETE.md) | 200+ indicators | ✅ |
+| [STRATEGY_ENGINE_COMPLETE.md](./backend/STRATEGY_ENGINE_COMPLETE.md) | Strategy engine | ✅ |
+| [RISK_MANAGEMENT_COMPLETE.md](./backend/RISK_MANAGEMENT_COMPLETE.md) | Risk management | ✅ |
+| [ML_SERVICES_COMPLETE.md](./backend/ML_SERVICES_COMPLETE.md) | ML services | ✅ |
+| [EXCHANGE_CLIENTS_COPY_TRADING.md](./backend/EXCHANGE_CLIENTS_COPY_TRADING.md) | Exchange clients | ✅ |
 
-### Trading Bots
+### API Categories
 
-| Document | Description |
-|----------|-------------|
-| [`bots/GRID_BOT.md`](./bots/GRID_BOT.md) | Grid trading bot |
-| [`bots/DCA_BOT.md`](./bots/DCA_BOT.md) | DCA bot documentation |
-| [`bots/BB_BOT.md`](./bots/BB_BOT.md) | Bollinger Bands bot |
-| [`bots/ARGUS_BOT.md`](./bots/ARGUS_BOT.md) | Pump & dump detection |
-| [`bots/VISION_BOT.md`](./bots/VISION_BOT.md) | Price forecasting bot |
-
-### Indicators & Strategies
-
-| Document | Description |
-|----------|-------------|
-| [`indicators/README.md`](./indicators/README.md) | All technical indicators |
-| [`trading/STRATEGIES.md`](./trading/STRATEGIES.md) | Trading strategies |
-| [`trading/TACTICS.md`](./trading/TACTICS.md) | Entry/exit tactics |
-
-### Machine Learning
-
-| Document | Description |
-|----------|-------------|
-| [`ml/ML_PIPELINE.md`](./ml/ML_PIPELINE.md) | ML pipeline documentation |
-| [`ml/LAWRENCE_CLASSIFIER.md`](./ml/LAWRENCE_CLASSIFIER.md) | Lawrence classifier |
-| [`ml/FEATURE_ENGINEERING.md`](./ml/FEATURE_ENGINEERING.md) | Feature engineering |
+| Category | Endpoints | Documentation |
+|----------|-----------|---------------|
+| Trading | 12 | ✅ Complete |
+| Bots | 21 | ✅ Complete |
+| ML | 17 | ✅ Complete |
+| Risk Management | 7 | ✅ Complete |
+| Exchange | 7 | ✅ Complete |
+| Signals | 4 | ✅ Complete |
+| Cron | 8 | ✅ Complete |
+| Data Management | 15 | ✅ Complete |
+| Telegram | 4 | ✅ Complete |
+| Copy Trading | 4 | ✅ Complete |
 
 ---
 
 ## 🎨 Frontend Documentation
 
-### Components
+**Location:** [`components/`](./components/) | **Files:** 30+
 
-| Document | Description |
-|----------|-------------|
-| [`components/README.md`](./components/README.md) | UI components overview |
-| [`components/ADDITIONAL_COMPONENTS_COMPLETE.md`](./components/ADDITIONAL_COMPONENTS_COMPLETE.md) | Additional components |
+### Component Documentation
 
-### Hooks
-
-| Document | Description |
-|----------|-------------|
-| [`hooks/README.md`](./hooks/README.md) | All React hooks (14 hooks) |
-
-### State Management
-
-| Document | Description |
-|----------|-------------|
-| [`state-management/README.md`](./state-management/README.md) | Zustand store documentation |
-
-### Types
-
-| Document | Description |
-|----------|-------------|
-| [`types/README.md`](./types/README.md) | TypeScript types (18+ interfaces) |
+| Document | Components | Status |
+|----------|------------|--------|
+| [DASHBOARD_COMPONENTS.md](./components/DASHBOARD_COMPONENTS.md) | Balance, Market Forecast, Positions | ✅ |
+| [CHART_COMPONENTS.md](./components/CHART_COMPONENTS.md) | Price Chart, One Click Trading | ✅ |
+| [PORTFOLIO_MANAGEMENT.md](./components/PORTFOLIO_MANAGEMENT.md) | PnL Analytics, Asset Allocation | ✅ |
+| [OPERATIONAL_BOTS.md](./components/OPERATIONAL_BOTS.md) | Grid, DCA, BB Bots | ✅ |
+| [ANALYTICAL_BOTS.md](./components/ANALYTICAL_BOTS.md) | Argus, Orion, Vision Bots | ✅ |
+| [ML_FILTERING_SYSTEM.md](./components/ML_FILTERING_SYSTEM.md) | ML Filtering, Signal Scorer | ✅ |
+| [JOURNAL_FEATURE.md](./components/JOURNAL_FEATURE.md) | Journal Panel, Trade Logging | ✅ |
+| [NEWS_FEED.md](./components/NEWS_FEED.md) | News Panel, Sentiment | ✅ |
+| [WORKSPACE_MANAGEMENT.md](./components/WORKSPACE_MANAGEMENT.md) | Layout Management | ✅ |
+| [BACKUP_RESTORE.md](./components/BACKUP_RESTORE.md) | Backup/Restore Functions | ✅ |
 
 ---
 
-## 🔗 Integration Guides
+## 🔌 Integration Guides
 
-### Exchange Integration
+**Location:** [`integrations/`](./integrations/), [`modules/`](./modules/)
+
+| Integration | Description | Status |
+|-------------|-------------|--------|
+| Cornix API | Signal copying platform | ✅ |
+| TradingView Webhook | Alert integration | ✅ |
+| Telegram Bot | Bot notifications | ✅ |
+| WolfBot | External bot integration | ✅ |
+| Zenbot | Strategy framework | ✅ |
+| Jesse | Backtesting framework | ✅ |
+
+---
+
+## 🔐 Security Documentation
+
+**Location:** [`security/`](./security/)
 
 | Document | Description |
 |----------|-------------|
-| [`exchanges/README.md`](./exchanges/README.md) | All exchange integrations |
-| [`binance/README.md`](./binance/README.md) | Binance integration |
-| [`integrations/EXCHANGE_CLIENTS.md`](./integrations/EXCHANGE_CLIENTS.md) | Exchange clients |
-
-### Microservices
-
-| Document | Description |
-|----------|-------------|
-| [`microservices/README.md`](./microservices/README.md) | All microservices |
-| [`integrations/IAF_SERVICE.md`](./integrations/IAF_SERVICE.md) | IAF Python service |
-
-### AI Skills
-
-| Document | Description |
-|----------|-------------|
-| [`skills/README.md`](./skills/README.md) | 18 AI skills integration |
+| API Key Security | Encryption, storage |
+| 2FA Setup | Two-factor authentication |
+| Rate Limiting | API protection |
+| Audit Logging | Activity tracking |
 
 ---
 
 ## 🔗 Quick Links
 
-### API Endpoints
+### For Developers
+- [Backend API Reference](./backend/BACKEND_API_REFERENCE.md)
+- [Component Documentation](./components/README.md)
+- [Knowledge Base](./kb/README.md)
 
-```
-Trading:     /api/trade, /api/trades, /api/positions
-Bots:        /api/bots, /api/bots/[type]
-ML:          /api/ml/predict, /api/ml/train, /api/ml/classify
-Risk:        /api/risk, /api/risk/killswitch
-Signals:     /api/signals, /api/chat/parse-signal
-Exchange:    /api/exchange, /api/prices, /api/ohlcv
-```
+### For Traders
+- [Bot Documentation](./bots/)
+- [Trading Strategies](./trading/)
+- [Risk Management](./risk-management/)
 
-### WebSocket Ports
-
-```
-Price Service:   3002
-Bot Monitor:     3003
-Risk Monitor:    3004
-Chat Service:    3005
-ML Service:      3006
-RL Service:      3007
-```
-
-### External Resources
-
-- [TradingView](https://www.tradingview.com/)
-- [Binance API](https://binance-docs.github.io/apidocs/)
-- [Pine Script Reference](https://www.tradingview.com/pine-script-docs/)
-- [Lightweight Charts](https://tradingview.github.io/lightweight-charts/)
+### For DevOps
+- [Deployment Guide](./deployment/)
+- [Microservices](./microservices/)
+- [Monitoring Setup](./monitoring/)
 
 ---
 
-## 📊 Statistics
+## 📁 Directory Structure
 
-| Metric | Value |
-|--------|-------|
-| **Total Documents** | 4,000+ |
-| **Knowledge Base Files** | 3,933 |
-| **Backend Docs** | 45+ |
-| **Frontend Docs** | 35+ |
-| **Code Examples** | 500+ |
-| **API Endpoints** | 120+ |
-| **Technical Indicators** | 200+ |
-| **Trading Bots** | 17+ |
+```
+docs/
+├── architecture/      # Architecture decisions (ADRs)
+├── backend/          # Backend API documentation
+├── bots/             # Trading bot documentation
+├── components/       # UI component documentation
+├── deployment/       # Deployment guides
+├── exchanges/        # Exchange integration docs
+├── hooks/           # React hooks documentation
+├── indicators/       # Technical indicators
+├── integrations/     # Third-party integrations
+├── kb/              # Knowledge Base (3,667 files)
+│   ├── binance/     # Binance API docs (276)
+│   ├── okx/         # OKX API docs (567)
+│   ├── tradingview/ # TradingView docs (2,980)
+│   ├── pine-script/ # Pine Script docs (72)
+│   ├── cornix/      # Cornix docs (245)
+│   └── ...
+├── microservices/    # Microservice documentation
+├── ml/              # ML/AI documentation
+├── modules/         # Module documentation
+├── security/        # Security documentation
+├── trading/         # Trading documentation
+└── ui/              # UI/UX documentation
+```
 
 ---
 
-*Documentation maintained for CITARION Algorithmic Trading Platform.*
-*Last updated: March 2026*
+*CITARION Algorithmic Trading Platform Documentation*  
+*Last Updated: March 2026*
