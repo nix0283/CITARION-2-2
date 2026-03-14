@@ -358,6 +358,7 @@ citarion/
 | `/api/demo/close` | POST | Close demo position |
 | `/api/trades` | GET/POST/DELETE | Trade history with filters |
 | `/api/trade-events` | GET/POST | SSE trade events |
+| `/api/trading/notifications` | GET | SSE real-time trading notifications |
 | `/api/positions/sync` | POST | Sync positions from exchanges |
 | `/api/positions/escort` | POST/PUT/DELETE | Position escort management |
 
@@ -885,6 +886,81 @@ const stats = await copyClient.getMasterTraderStats();
 // Get copied positions
 const positions = await copyClient.getCopiedPositions();
 ```
+
+### Testnet & Demo Trading
+
+CITARION supports multiple testing environments for safe trading development:
+
+| Exchange | Mode | Endpoint | Initial Balance | Registration |
+|----------|------|----------|-----------------|--------------|
+| **Binance** | TESTNET | `testnet.binancefuture.com` | 15,000 USDT | [Register](https://testnet.binancefuture.com) |
+| **Bybit** | TESTNET | `api-testnet.bybit.com` | 50,000 USDT | [Register](https://testnet.bybit.com) |
+| **OKX** | DEMO | `www.okx.com` + header | 10,000 USDT | Same account |
+| **Bitget** | DEMO | `api.bitget.com` (S-prefix) | 50,000 SUSDT | Same account |
+| **BingX** | DEMO | `open-api.bingx.com` | 100,000 VST | Same account |
+
+**Usage:**
+
+```typescript
+// Binance Testnet
+const binanceClient = new BinanceClient({
+  exchange: 'binance',
+  testnet: true,  // Uses testnet.binancefuture.com
+  apiKey: 'testnet-api-key',
+  apiSecret: 'testnet-api-secret'
+});
+
+// OKX Demo Mode
+const okxClient = new OKXClient({
+  exchange: 'okx',
+  demo: true,  // Adds x-simulated-trading: 1 header
+  apiKey: 'demo-api-key',
+  apiSecret: 'api-secret',
+  passphrase: 'passphrase'
+});
+
+// Bitget Demo Mode (S-prefix symbols)
+const bitgetClient = new BitgetClient({
+  exchange: 'bitget',
+  demo: true,  // Uses SBTCUSDT instead of BTCUSDT
+  apiKey: 'demo-api-key',
+  apiSecret: 'api-secret',
+  passphrase: 'passphrase'
+});
+```
+
+### Trading Notifications (SSE)
+
+Real-time trading notifications via Server-Sent Events:
+
+```typescript
+// Connect to trading notifications
+const eventSource = new EventSource('/api/trading/notifications');
+
+eventSource.onmessage = (event) => {
+  const notification = JSON.parse(event.data);
+  
+  switch (notification.type) {
+    case 'POSITION_OPENED':
+      console.log(`Position opened: ${notification.data.symbol}`);
+      break;
+    case 'POSITION_CLOSED':
+      console.log(`Position closed: PnL ${notification.data.realizedPnl}`);
+      break;
+    case 'FUNDING_RATE':
+      console.log(`Funding rate: ${notification.data.rate}`);
+      break;
+  }
+};
+```
+
+**Notification Types:**
+- `POSITION_OPENED` - New position opened
+- `POSITION_CLOSED` - Position closed with PnL
+- `POSITION_EDITED` - SL/TP modified
+- `FUNDING_RATE` - Funding rate update
+- `MARK_PRICE` - Mark price change
+- `LIQUIDATION_WARNING` - Near liquidation alert
 
 ---
 
@@ -1488,7 +1564,24 @@ bun run db:migrate
 
 ## 📝 Changelog
 
-### Version 2.0.0 (Current)
+### Version 2.1.0 (Current)
+
+**New Features:**
+- 📡 SSE Trading Notifications - real-time position & funding updates
+- 🔔 Cornix-style notification format integration
+- 📊 Enhanced Chat Service with multi-entry signal parsing
+- 🧪 Detailed Testnet/Demo configuration for 5 exchanges
+
+**Exchange Testing Modes:**
+| Exchange | Mode | Initial Balance |
+|----------|------|-----------------|
+| Binance | TESTNET | 15,000 USDT |
+| Bybit | TESTNET | 50,000 USDT |
+| OKX | DEMO | 10,000 USDT |
+| Bitget | DEMO | 50,000 SUSDT |
+| BingX | DEMO | 100,000 VST |
+
+### Version 2.0.0
 
 **New Features:**
 - ✨ 17+ specialized trading bots
