@@ -2,7 +2,7 @@
 
 External documentation from trading platforms, exchanges, and charting libraries.
 
-**Total Files:** 5,249 documents (markdown, images, HTML, code samples)
+**Total Files:** 5,490 documents (markdown, images, HTML, code samples)
 
 ---
 
@@ -13,7 +13,7 @@ External documentation from trading platforms, exchanges, and charting libraries
 | Knowledge Base | Files | Source |
 |----------------|-------|--------|
 | **Binance API** | 503 | [binance-docs](https://binance-docs.github.io/apidocs/) |
-| **OKX API** | 7 | [okx.com](https://www.okx.com/docs-v5/) |
+| **OKX API** | 567 | [okx.com](https://www.okx.com/docs-v5/) |
 | **Bybit API** | 1 | [bybit-exchange](https://bybit-exchange.github.io/docs/) |
 | **Bitget API** | 1 | [bitget.com](https://www.bitget.com/api-doc/) |
 | **BingX API** | 2 | [bingx-api](https://bingx-api.github.io/docs-v3/) |
@@ -24,6 +24,7 @@ External documentation from trading platforms, exchanges, and charting libraries
 |----------------|-------|--------|
 | **TradingView** | 2,985 | [tradingview.com](https://www.tradingview.com/) |
 | **Pine Script** | 72 | [pine-script-docs](https://www.tradingview.com/pine-script-docs/) |
+| **Pine Script Lang** | 72 | [pine-script-docs](https://www.tradingview.com/pine-script-docs/) |
 | **Lightweight Charts** | 120 | [lightweight-charts](https://tradingview.github.io/lightweight-charts/) |
 
 ### Trading Bots & Services
@@ -32,6 +33,7 @@ External documentation from trading platforms, exchanges, and charting libraries
 |----------------|-------|--------|
 | **Cornix** | 699 | [cornix.io](https://cornix.io/) |
 | **Cornix API** | 225 | Cornix API documentation |
+| **Cornix KB** | 242 | Cornix Help Center (NEW!) |
 
 ---
 
@@ -47,15 +49,20 @@ kb/
 │   ├── python/          # Python SDK
 │   └── ...
 │
-├── okx/                  # OKX Exchange API (7 files)
+├── okx/                  # OKX Exchange API (567 files)
 │   ├── README.md        # API Overview
-│   ├── en.md            # Full API Documentation (2.6M)
-│   ├── log.md           # API Change Log (900K)
-│   ├── trick.md         # Best Practices & Tips (66K)
-│   ├── broker.md        # Broker Program API (58K)
-│   ├── agent.md         # Agent Program API (26K)
-│   ├── LOCAL_ORDER_BOOK.md  # Local Order Book Implementation
-│   ├── repos/           # SDK repositories
+│   ├── en.md            # Full API Documentation
+│   ├── log.md           # API Change Log
+│   ├── trick.md         # Best Practices & Tips
+│   ├── broker.md        # Broker Program API
+│   ├── agent.md         # Agent Program API
+│   ├── repos/           # SDK repositories (Rust, TypeScript, Python)
+│   │   ├── fairwic-okx-rs/    # Rust SDK
+│   │   ├── rotyang-okx-rs/    # Rust SDK (alternative)
+│   │   ├── npm-okx-api/       # TypeScript SDK
+│   │   ├── pypi-okx-sdk/      # Python SDK
+│   │   ├── docs-rs-okx/       # Rust docs
+│   │   └── lib-rs-okx/        # Rust library docs
 │   └── media/           # Documentation images
 │
 ├── bybit/                # Bybit Exchange API (1 file)
@@ -109,6 +116,12 @@ kb/
 │   ├── Visuals/         # Visual elements
 │   └── Errors/          # Error reference
 │
+├── pine-script-lang/     # Pine Script Language Reference (72 files)
+│   ├── Language/        # Syntax & types
+│   ├── Concepts/        # Core concepts
+│   ├── Writing/         # Script guides
+│   └── ...
+│
 ├── lightweight-charts/   # Lightweight Charts (120 files)
 │   ├── docs/            # API docs
 │   ├── tutorials/       # Tutorials
@@ -122,9 +135,23 @@ kb/
 │   ├── Cornix_notifications-example/       # Notification formats
 │   └── Cornix_bot_control_telegram-example/ # Telegram bot control
 │
-└── cornix-api/           # Cornix API (225 files)
-    ├── signal-format/   # Signal parsing
-    └── api/             # API integration
+├── cornix-api/           # Cornix API (225 files)
+│   ├── signal-format/   # Signal parsing
+│   └── api/             # API integration
+│
+└── cornix-kb/            # Cornix Help Center KB (242 files) - NEW!
+    ├── getting-started/ # Account setup, API keys
+    ├── trading-bots/    # Signals bot, Grid bot, DCA bot
+    ├── trading-configurations/ # All trading settings
+    ├── channel-admins/  # Channel management
+    ├── errors-notifications/ # Error messages & notifications
+    ├── account-subscription/ # Plans & billing
+    ├── marketplace/     # Marketplace features
+    ├── backtesting/     # Backtesting docs
+    ├── demo-accounts/   # Demo trading
+    ├── trading-functionalities/ # Manual trading features
+    ├── faqs-more/       # FAQs and guides
+    └── affiliation-program/ # Affiliate program
 ```
 
 ---
@@ -153,10 +180,14 @@ WebSocket:   wss://stream.binance.com:9443/ws
 Comprehensive OKX documentation with SDKs and implementation guides.
 
 **Features:**
-- Complete REST & WebSocket API documentation (2.6M)
+- Complete REST & WebSocket API documentation
+- Multiple SDK repositories:
+  - `fairwic-okx-rs` - Rust SDK with full API support
+  - `rotyang-okx-rs` - Rust SDK with order book management
+  - `npm-okx-api` - TypeScript SDK
+  - `pypi-okx-sdk` - Python SDK
 - Local Order Book Management implementation
 - Broker & Agent program APIs
-- Multiple SDK repositories (TypeScript, Rust, Python)
 
 **Key Endpoints:**
 ```
@@ -231,7 +262,7 @@ Complete TradingView platform documentation including widgets, features, and cha
 
 ### Pine Script
 
-**Location:** [`pine-script/`](./pine-script/)
+**Location:** [`pine-script/`](./pine-script/) | [`pine-script-lang/`](./pine-script-lang/)
 
 Pine Script v5/v6 programming language reference for custom indicators and strategies.
 
@@ -249,9 +280,21 @@ TradingView's open-source charting library with API documentation and examples.
 
 ### Cornix
 
-**Location:** [`cornix/`](./cornix/) | [`cornix-api/`](./cornix-api/)
+**Location:** [`cornix/`](./cornix/) | [`cornix-api/`](./cornix-api/) | [`cornix-kb/`](./cornix-kb/)
 
 Cornix trading bot platform documentation with signal examples and API integration.
+
+**cornix-kb/** - NEW! Complete Help Center Knowledge Base (242 files):
+- **getting-started/** - Account creation, API keys for all exchanges
+- **trading-bots/** - Signals Bot, Grid Bot, DCA Bot, TradingView Bot
+- **trading-configurations/** - All trading settings (leverage, stop-loss, take-profit, etc.)
+- **channel-admins/** - Signal channel management
+- **errors-notifications/** - Error codes and notification messages
+- **account-subscription/** - Subscription plans and billing
+- **marketplace/** - Marketplace features and statistics
+- **demo-accounts/** - Risk-free demo trading
+- **trading-functionalities/** - Manual trading features
+- **faqs-more/** - FAQs and trading guides
 
 **Example Folders (8 examples):**
 - `Cornix_bot_control_telegram-example` - Bot control via Telegram
