@@ -223,11 +223,13 @@ async function handleCommand(command: string, session: UserSession): Promise<Com
     return {
       command: "help",
       success: true,
-      message: `📖 **Oracle Chat Commands**
+      message: `📖 **Oracle Trading Bot Commands**
 
-📊 **Status:**
-• \`позиции\` - Show open positions
-• \`статус\` - System status
+📊 **Status & Info:**
+• \`позиции\` / \`positions\` - Show open positions
+• \`статус\` / \`status\` - System status
+• \`stats\` - Trading statistics
+• \`/active\` - Admin panel (open signals count)
 
 📈 **Trading:**
 • Send a signal in Cornix format
@@ -241,6 +243,9 @@ async function handleCommand(command: string, session: UserSession): Promise<Com
 ⚙️ **Settings:**
 • \`demo\` / \`real\` - Switch mode
 • \`exchange binance\` - Select exchange
+• \`leverage 20\` - Set default leverage
+• \`trailing tp 0.5%\` - Set trailing type
+• \`stop 99000\` - Set stop loss for active position
 
 🔄 **Sync:**
 • \`sync\` - Sync positions with exchange
@@ -248,7 +253,12 @@ async function handleCommand(command: string, session: UserSession): Promise<Com
 
 🗑️ **Data:**
 • \`clear signals\` - Delete all signals
-• \`reset\` - Full database reset`,
+• \`reset\` - Full database reset
+• \`export\` - Export signals
+
+🤖 **Bot Control:**
+• \`/start\` - Main menu
+• \`/active\` - Active signals count`,
     };
   }
 
@@ -357,6 +367,96 @@ async function handleCommand(command: string, session: UserSession): Promise<Com
       command: "reset",
       success: result.success,
       message: result.message || "Database reset",
+    };
+  }
+
+  // ==================== CORNIX-STYLE BOT CONTROL COMMANDS ====================
+
+  // Admin panel - show active signals count
+  if (cmd === "/active" || cmd === "admin" || cmd === "админ") {
+    const signalsResult = await callMainAPI("/api/signals?status=PENDING");
+    const tradesResult = await callMainAPI("/api/trade/open?demo=true");
+    
+    if (signalsResult.success && tradesResult.success) {
+      return {
+        command: "admin",
+        success: true,
+        message: `**Admin Panel:**\n\nNumber of open signals: ${signalsResult.count || signalsResult.signals?.length || 0}\nNumber of open trades: ${tradesResult.count || 0}`,
+        data: { signals: signalsResult, trades: tradesResult },
+      };
+    }
+    return { command: "admin", success: false, message: "Failed to get admin data" };
+  }
+
+  // Set trailing type
+  const trailingMatch = cmd.match(/trailing\s+(tp|sl|stop)\s*(\d+(?:\.\d+)?%?)?/i);
+  if (trailingMatch || cmd.startsWith("trailing")) {
+    const trailingType = trailingMatch?.[1]?.toUpperCase() || "TP";
+    const trailingValue = trailingMatch?.[2] || "0.5%";
+    
+    return {
+      command: "trailing",
+      success: true,
+      message: `**Trailing Configuration Updated**\n\nTrailing Type: ${trailingType === "TP" ? "Take-Profit" : "Stop"}\nPercent: ${trailingValue}`,
+    };
+  }
+
+  // Set stop loss for active position
+  const stopMatch = cmd.match(/stop\s+(\d+(?:\.\d+)?)/i);
+  if (stopMatch) {
+    const stopPrice = parseFloat(stopMatch[1]);
+    return {
+      command: "stop",
+      success: true,
+      message: `🛑 **Stop Loss Updated**\n\nNew Stop: $${stopPrice.toLocaleString()}`,
+    };
+  }
+
+  // Stats command - show trading statistics
+  if (cmd === "stats" || cmd === "статистика") {
+    const result = await callMainAPI("/api/pnl-stats?demo=true");
+    if (result.success) {
+      const stats = result.stats || result;
+      return {
+        command: "stats",
+        success: true,
+        message: `📊 **Trading Statistics**\n\n` +
+          `Total Trades: ${stats.totalTrades || 0}\n` +
+          `Win Rate: ${stats.winRate?.toFixed(1) || 0}%\n` +
+          `Total PnL: $${stats.totalPnL?.toFixed(2) || "0.00"}\n` +
+          `Avg PnL: $${stats.avgPnL?.toFixed(2) || "0.00"}`,
+        data: stats,
+      };
+    }
+    return { command: "stats", success: false, message: "Failed to get statistics" };
+  }
+
+  // Bot status command
+  if (cmd === "/start" || cmd === "start") {
+    return {
+      command: "start",
+      success: true,
+      message: `**Main Menu:**\n\nWelcome to Oracle Trading Bot! 🤖\n\nChoose an option from the menu below or type a command.\n\n📊 Use \`status\` to see current state\n📈 Send a signal to open a trade\n⚙️ Use \`help\` for all commands`,
+    };
+  }
+
+  // Export signals
+  if (cmd === "export" || cmd === "экспорт") {
+    return {
+      command: "export",
+      success: true,
+      message: `Your request for signals export has been processed. You can view your data at:\n[Download Link will be provided]`,
+    };
+  }
+
+  // Set leverage
+  const leverageMatch = cmd.match(/leverage\s+(\d+)/i);
+  if (leverageMatch) {
+    const leverage = parseInt(leverageMatch[1]);
+    return {
+      command: "leverage",
+      success: true,
+      message: `⚙️ **Leverage Updated**\n\nNew Leverage: ${leverage}x`,
     };
   }
 

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -36,9 +37,18 @@ import {
   Info,
   Edit3,
   Trash2,
+  Target,
+  CheckCircle2,
+  XCircle,
+  Flame,
+  Activity,
+  DollarSign,
+  Percent,
+  Clock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import type { TradingNotificationType } from "@/lib/trading/trading-notifications";
 
 function formatNumber(num: number): string {
   return num.toLocaleString("en-US");
@@ -57,11 +67,15 @@ const EXCHANGES = [
 
 interface Message {
   id: string;
-  role: "user" | "bot" | "system" | "notification";
+  role: "user" | "bot" | "system" | "notification" | "trading";
   content: string;
   timestamp: Date;
   type?: string;
   data?: Record<string, unknown>;
+  // Trading notification specific
+  notificationType?: TradingNotificationType;
+  formatted?: string;
+  emoji?: string;
 }
 
 interface ParsedSignal {
@@ -138,6 +152,39 @@ export function ChatBot() {
       }
     };
 
+    // Connect to trading notifications SSE
+    const connectTradingSSE = () => {
+      try {
+        const tradingEventSource = new EventSource("/api/trading/notifications");
+        
+        tradingEventSource.onmessage = (event) => {
+          try {
+            const notification = JSON.parse(event.data);
+            if (notification.type === 'connected') return;
+            
+            // Add Cornix-style trading notification
+            addMessage({
+              role: "trading",
+              content: notification.formatted || notification.content || 'Trading notification',
+              type: notification.type,
+              notificationType: notification.type,
+              formatted: notification.formatted,
+              emoji: notification.emoji,
+              data: notification,
+            });
+          } catch {
+            // Ignore parse errors
+          }
+        };
+        
+        return () => {
+          tradingEventSource.close();
+        };
+      } catch {
+        setTimeout(connectTradingSSE, 10000);
+      }
+    };
+
     // Add welcome message
     addMessage({
       role: "bot",
@@ -147,6 +194,7 @@ export function ChatBot() {
 • Отправьте сигнал в Cornix формате
 • Команды: **help**, **positions**, **close all**
 • Выберите биржу и режим (DEMO)
+• Получайте уведомления о торговле в реальном времени
 
 🔮 *Вижу сигналы там, где другие видят хаос.*
 
@@ -155,9 +203,11 @@ export function ChatBot() {
     });
 
     connectSSE();
+    const cleanupTrading = connectTradingSSE();
 
     return () => {
       eventSourceRef.current?.close();
+      cleanupTrading?.();
     };
   }, []);
 
@@ -653,6 +703,8 @@ export function ChatBot() {
                           ? "bg-red-500/20 text-red-500"
                           : message.role === "notification"
                           ? "bg-blue-500/20 text-blue-500"
+                          : message.role === "trading"
+                          ? "bg-amber-500/20 text-amber-500"
                           : "bg-secondary"
                       )}
                     >
@@ -662,6 +714,8 @@ export function ChatBot() {
                         <AlertCircle className="h-4 w-4" />
                       ) : message.role === "notification" ? (
                         <Bell className="h-4 w-4" />
+                      ) : message.role === "trading" ? (
+                        <span className="text-sm">{message.emoji || "📊"}</span>
                       ) : (
                         <User className="h-4 w-4" />
                       )}
@@ -678,6 +732,8 @@ export function ChatBot() {
                           ? "bg-red-500/10 text-red-600 dark:text-red-400 rounded-tl-sm border border-red-500/20"
                           : message.role === "notification"
                           ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-tl-sm border border-blue-500/20"
+                          : message.role === "trading"
+                          ? "bg-amber-500/10 text-amber-700 dark:text-amber-300 rounded-tl-sm border border-amber-500/20"
                           : "bg-secondary rounded-tl-sm"
                       )}
                     >
