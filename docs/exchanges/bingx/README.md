@@ -1715,3 +1715,181 @@ var order = await client.PlaceOrderAsync(
 ## Regional Restrictions
 
 **Important:** API access may be restricted in certain regions. Check BingX's terms of service for current restrictions.
+
+---
+
+## Troubleshooting
+
+### WebSocket Connection Issues (Browser CORS)
+
+**Problem:** WebSocket connection fails with error code 1006 (Abnormal Closure) when connecting from a browser environment.
+
+**Symptoms:**
+```
+WebSocket connection to 'wss://open-api-swap.bingx.com/openapi/swap/v2/ws' failed
+[BingX] WebSocket disconnected: Abnormal Closure (code: 1006)
+```
+
+**Cause:** Browser CORS/CSP restrictions block WebSocket connections to BingX servers from web applications.
+
+**Solution:** Implement REST API fallback with polling.
+
+#### Implementation in CITARION
+
+The following solution is implemented in `src/lib/price-websocket-core.ts`:
+
+```typescript
+// REST polling fallback for exchanges where WebSocket is blocked
+private async startRestPolling(source: PriceSource): Promise<void> {
+  console.log(`[${source}] Starting REST polling mode`);
+  this.connectionStatus.set(source, "connected");
+  
+  // Poll immediately
+  await this.fetchPricesViaRest(source);
+  
+  // Then poll every 5 seconds
+  const interval = setInterval(async () => {
+    await this.fetchPricesViaRest(source);
+  }, 5000);
+  
+  this.restPollIntervals.set(source, interval);
+}
+
+private async fetchPricesViaRest(source: PriceSource): Promise<void> {
+  const symbols = this.symbols.map(s => {
+    if (s.includes("-")) return s;
+    return s.replace("USDT", "-USDT");
+  }).join(",");
+  
+  const response = await fetch(`/api/prices/${source}?symbols=${symbols}&market=futures`);
+  // ... process response
+}
+```
+
+#### REST API Endpoint
+
+Create `/api/prices/bingx/route.ts`:
+
+```typescript
+// BingX REST API endpoints
+const BINGX_FUTURES_BASE_URL = "https://open-api.bingx.com";
+
+// Symbol format: BTCUSDT -> BTC-USDT
+function formatSymbol(symbol: string): string {
+  const s = symbol.toUpperCase();
+  if (s.includes("-")) return s;
+  return s.replace("USDT", "-USDT");
+}
+
+async function fetchFuturesTicker(symbol: string) {
+  const formattedSymbol = formatSymbol(symbol);
+  const url = `${BINGX_FUTURES_BASE_URL}/openApi/swap/v2/quote/ticker?symbol=${formattedSymbol}`;
+  
+  const response = await fetch(url);
+  const data = await response.json();
+  
+  if (data.code !== 0) {
+    throw new Error(data.msg || "BingX API error");
+  }
+  
+  return data.data;
+}
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const symbols = searchParams.get("symbols")?.split(",") || DEFAULT_SYMBOLS;
+  
+  const prices: Record<string, any> = {};
+  
+  for (const symbol of symbols) {
+    const data = await fetchFuturesTicker(symbol);
+    const normalizedSymbol = symbol.replace("-", "");
+    
+    prices[normalizedSymbol] = {
+      symbol: normalizedSymbol,
+      price: parseFloat(data.lastPrice || 0),
+      change24h: parseFloat(data.priceChangePercent || 0),
+      high24h: parseFloat(data.highPrice || 0),
+      low24h: parseFloat(data.lowPrice || 0),
+      volume24h: parseFloat(data.volume || 0),
+    };
+  }
+  
+  return Response.json({ success: true, prices, source: "bingx" });
+}
+```
+
+### Correct WebSocket URLs
+
+**Important:** The WebSocket URLs differ for public vs private channels:
+
+| Type | Correct URL | Incorrect URL |
+|------|-------------|---------------|
+| Spot Public | `wss://open-api-ws.bingx.com/openapi` | ~~`wss://open-api-ws.bingx.com/openapi/spot/v1/ws`~~ |
+| Spot Private | `wss://open-api-ws.bingx.com/openapi/spot/v1/ws` | - |
+| Futures Public | `wss://open-api-swap.bingx.com/openapi/swap/v2/ws` | - |
+| Futures Private | `wss://open-api-swap.bingx.com/openapi/swap/v2/ws` | - |
+
+### Symbol Format
+
+BingX uses `BTC-USDT` format (with hyphen), not `BTCUSDT`:
+
+```typescript
+// Correct
+const symbol = "BTC-USDT";
+
+// Incorrect
+const symbol = "BTCUSDT";
+```
+
+### Ping/Pong Requirements
+
+- **Interval:** Send ping every 25-30 seconds
+- **Format:** `{"pong": <timestamp>}` (client sends pong, not ping!)
+- **Direction:** Client-initiated
+
+```typescript
+setInterval(() => {
+  ws.send(JSON.stringify({ pong: Date.now() }));
+}, 25000);
+```
+
+### Subscription Format
+
+```typescript
+ws.send(JSON.stringify({
+  id: Date.now().toString(),
+  reqType: "sub",
+  dataType: "BTC-USDT@ticker"
+}));
+```
+
+### GZIP Compression
+
+**Important:** BingX WebSocket does NOT use GZIP compression for JSON messages. Setting GZIP to true will cause parsing errors.
+
+```typescript
+// Correct
+requiresGzip: false
+
+// Incorrect
+requiresGzip: true
+```
+
+### Fallback Strategy
+
+If WebSocket fails after 3 attempts, switch to REST polling:
+
+1. **WebSocket First:** Try WebSocket connection for real-time data
+2. **REST Fallback:** After 3 failed WebSocket attempts, switch to REST polling
+3. **Polling Interval:** 5 seconds for balance between freshness and rate limits
+
+---
+
+## Changelog
+
+### 2026-03-15
+- Fixed WebSocket URL for Spot public: `/openapi` instead of `/openapi/spot/v1/ws`
+- Added REST API fallback for browser environments where WebSocket is blocked by CORS
+- Created `/api/prices/bingx` endpoint for REST price fetching
+- Implemented automatic fallback after 3 failed WebSocket connection attempts

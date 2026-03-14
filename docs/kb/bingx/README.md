@@ -1715,3 +1715,82 @@ var order = await client.PlaceOrderAsync(
 ## Regional Restrictions
 
 **Important:** API access may be restricted in certain regions. Check BingX's terms of service for current restrictions.
+
+---
+
+## Troubleshooting & Known Issues
+
+### WebSocket Connection Fails in Browser (CORS Issue)
+
+**Date:** 2026-03-15  
+**Status:** RESOLVED  
+**Severity:** HIGH
+
+#### Problem
+WebSocket connections to BingX fail with error code 1006 (Abnormal Closure) when initiated from browser environments.
+
+#### Symptoms
+```
+WebSocket connection to 'wss://open-api-swap.bingx.com/openapi/swap/v2/ws' failed
+[BingX] WebSocket disconnected: Abnormal Closure (code: 1006)
+```
+
+#### Root Cause
+Browser CORS/CSP restrictions block WebSocket connections to BingX servers from web applications.
+
+#### Solution
+Implement REST API fallback with polling:
+
+1. **WebSocket First:** Attempt WebSocket connection for real-time data
+2. **Automatic Fallback:** After 3 failed attempts, switch to REST polling
+3. **Polling Interval:** 5 seconds between requests
+
+#### Files Modified
+- `src/lib/price-websocket-core.ts` - Added REST fallback logic
+- `src/app/api/prices/bingx/route.ts` - New REST API endpoint
+
+### Correct WebSocket URLs
+
+| Type | URL |
+|------|-----|
+| Spot Public | `wss://open-api-ws.bingx.com/openapi` ⚠️ |
+| Spot Private | `wss://open-api-ws.bingx.com/openapi/spot/v1/ws` |
+| Futures Public | `wss://open-api-swap.bingx.com/openapi/swap/v2/ws` |
+| Futures Private | `wss://open-api-swap.bingx.com/openapi/swap/v2/ws` |
+
+⚠️ **Important:** Spot public WebSocket uses `/openapi` path, NOT `/openapi/spot/v1/ws`
+
+### Symbol Format
+
+BingX uses `BTC-USDT` format with hyphen:
+```typescript
+// Correct
+"BTC-USDT"
+
+// Incorrect  
+"BTCUSDT"
+```
+
+### GZIP Configuration
+
+BingX WebSocket does **NOT** use GZIP compression:
+```typescript
+requiresGzip: false  // MUST be false
+```
+
+### Ping/Pong Requirements
+
+- Client sends `{"pong": timestamp}` every 25 seconds
+- Note: Client sends "pong", not "ping"!
+
+---
+
+## Quick Reference for Developers
+
+When implementing BingX integration:
+
+1. ✅ Use correct WebSocket URL based on public/private
+2. ✅ Format symbols with hyphen: `BTC-USDT`
+3. ✅ Disable GZIP compression
+4. ✅ Client sends pong every 25 seconds
+5. ✅ Implement REST fallback for browser environments

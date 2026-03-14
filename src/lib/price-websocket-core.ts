@@ -244,56 +244,88 @@ export const EXCHANGE_WS_CONFIGS: Record<PriceSource, ExchangeWsConfig> = {
   // ============ BINGX ============
   bingx: {
     name: "BingX",
-    spotWsUrl: "wss://open-api-ws.bingx.com/market",
-    futuresWsUrl: "wss://open-api-swap.bingx.com/ws",
-    requiresGzip: true, // IMPORTANT: GZIP compression!
+    // Spot public: wss://open-api-ws.bingx.com/openapi (NOT /openapi/spot/v1/ws)
+    // Futures public: wss://open-api-swap.bingx.com/openapi/swap/v2/ws
+    spotWsUrl: "wss://open-api-ws.bingx.com/openapi",
+    futuresWsUrl: "wss://open-api-swap.bingx.com/openapi/swap/v2/ws",
+    requiresGzip: false, // BingX WebSocket does NOT use GZIP for JSON messages
     requiresToken: false,
-    pingType: "server",
-    pingInterval: 5,
-    formatSymbol: (symbol, isFutures) => isFutures ? symbol.toUpperCase() : symbol.replace("USDT", "-USDT"),
-    buildSubscribe: (symbols, isFutures) => {
-      if (isFutures) {
-        return JSON.stringify({
-          id: Date.now().toString(),
-          reqType: "sub",
-          dataType: symbols.map(s => `${s}@ticker`).join(",")
-        });
-      }
+    pingType: "client", // Client must send ping to keep connection alive
+    pingInterval: 25, // Ping every 25 seconds
+    formatSymbol: (symbol, _isFutures) => {
+      // BingX uses BTC-USDT format for both spot and futures
+      // Convert BTCUSDT -> BTC-USDT
+      const s = symbol.toUpperCase();
+      if (s.includes("-")) return s;
+      return s.replace("USDT", "-USDT");
+    },
+    buildSubscribe: (symbols, _isFutures) => {
+      // BingX ticker subscription format
+      // dataType: BTC-USDT@ticker,BTC-USDT@ticker
+      const formattedSymbols = symbols.map(s => {
+        const formatted = s.includes("-") ? s : s.replace("USDT", "-USDT");
+        return `${formatted}@ticker`;
+      });
       return JSON.stringify({
         id: Date.now().toString(),
         reqType: "sub",
-        dataType: symbols.map(s => `${s.replace("USDT", "-USDT")}@ticker`).join(",")
+        dataType: formattedSymbols.join(",")
       });
     },
     parseMessage: (data) => {
       const msg = data as { 
         dataType?: string;
+        code?: number;
         data?: { 
           symbol?: string; 
-          lastPrice?: string; 
+          lastPrice?: string;
+          close?: string;
           priceChange?: string;
+          priceChangePercent?: string;
           highPrice?: string;
+          high24h?: string;
           lowPrice?: string;
+          low24h?: string;
           volume?: string;
+          volume24h?: string;
         } 
       };
-      if (!msg.data || !msg.data.symbol) return null;
+      
+      // Skip ping/pong and subscription confirmations
+      // Valid ticker messages have dataType and no error code
+      if (!msg.dataType) return null;
+      if (msg.code !== undefined && msg.code !== 0) return null;
+      if (!msg.data) return null;
+      
       const d = msg.data;
-      const symbol = (d.symbol || "").replace("-", "");
+      // Symbol format: BTC-USDT -> BTCUSDT
+      let symbol = d.symbol || "";
+      if (!symbol && msg.dataType) {
+        // Extract symbol from dataType (e.g., "BTC-USDT@ticker")
+        const match = msg.dataType.match(/^(.+)@/);
+        if (match) symbol = match[1];
+      }
+      
+      // Normalize: BTC-USDT -> BTCUSDT
+      symbol = symbol.replace("-", "");
       if (!symbol) return null;
+      
+      const price = parseFloat(d.lastPrice || d.close || "0");
+      const changePercent = parseFloat(d.priceChangePercent || d.priceChange || "0");
+      
       return {
         symbol,
         price: {
           symbol,
-          price: parseFloat(d.lastPrice || "0"),
-          change24h: parseFloat(d.priceChange || "0"),
-          high24h: parseFloat(d.highPrice || "0"),
-          low24h: parseFloat(d.lowPrice || "0"),
-          volume24h: parseFloat(d.volume || "0"),
+          price,
+          change24h: changePercent,
+          high24h: parseFloat(d.highPrice || d.high24h || "0"),
+          low24h: parseFloat(d.lowPrice || d.low24h || "0"),
+          volume24h: parseFloat(d.volume || d.volume24h || "0"),
         }
       };
     },
-    buildPing: () => "Pong",
+    buildPing: () => JSON.stringify({ pong: Date.now() }),
   },
 
   // ============ COINBASE ============
@@ -721,10 +753,13 @@ export class MultiExchangeWebSocket {
   private connectionStatus: Map<PriceSource, ConnectionStatus> = new Map();
   private reconnectAttempts: Map<PriceSource, number> = new Map();
   private pingIntervals: Map<PriceSource, ReturnType<typeof setInterval>> = new Map();
+  private restPollIntervals: Map<PriceSource, ReturnType<typeof setInterval>> = new Map();
   private maxReconnectAttempts = 10;
   private reconnectDelay = 1000;
   private symbols: string[];
   private useFutures: boolean;
+  // REST fallback mode for exchanges where WebSocket is blocked
+  private restFallbackSources: Set<PriceSource> = new Set();
 
   constructor(symbols: string[] = DEFAULT_SYMBOLS, useFutures = true) {
     this.symbols = symbols;
@@ -732,6 +767,11 @@ export class MultiExchangeWebSocket {
   }
 
   async connect(source: PriceSource): Promise<void> {
+    // Skip WebSocket if already in REST fallback mode
+    if (this.restFallbackSources.has(source)) {
+      return;
+    }
+
     if (this.sockets.has(source) && this.sockets.get(source)?.readyState === WebSocket.OPEN) {
       return;
     }
@@ -763,6 +803,11 @@ export class MultiExchangeWebSocket {
       return;
     }
 
+    // Debug log for BingX
+    if (source === "bingx") {
+      console.log(`[BingX] Connecting to:`, wsUrl);
+    }
+
     try {
       const ws = new WebSocket(wsUrl);
       
@@ -775,7 +820,14 @@ export class MultiExchangeWebSocket {
         
         // Send subscription
         const subscribeMsg = config.buildSubscribe(this.symbols, this.useFutures);
-        ws.send(typeof subscribeMsg === "string" ? subscribeMsg : JSON.stringify(subscribeMsg));
+        const subscribeStr = typeof subscribeMsg === "string" ? subscribeMsg : JSON.stringify(subscribeMsg);
+        
+        // Debug log for BingX
+        if (source === "bingx") {
+          console.log(`[BingX] Subscribing with:`, subscribeStr);
+        }
+        
+        ws.send(subscribeStr);
         
         // Setup ping interval for client-initiated pings
         if (config.pingType === "client") {
@@ -797,6 +849,11 @@ export class MultiExchangeWebSocket {
             data = JSON.parse(new TextDecoder().decode(event.data));
           }
 
+          // Debug log for BingX
+          if (source === "bingx") {
+            console.log(`[BingX] Received message:`, JSON.stringify(data).slice(0, 200));
+          }
+
           // Handle ping/pong
           if (this.isPingMessage(source, data)) {
             this.handlePing(source, ws, data);
@@ -809,6 +866,9 @@ export class MultiExchangeWebSocket {
           }
         } catch (e) {
           // Ignore parse errors
+          if (source === "bingx") {
+            console.error(`[BingX] Parse error:`, e);
+          }
         }
       };
 
@@ -848,7 +908,9 @@ export class MultiExchangeWebSocket {
       case "gate":
         return data === "pong";
       case "bingx":
-        return typeof data === "string" && data.toLowerCase().includes("ping");
+        // BingX sends ping as JSON: {"ping": timestamp} or string "ping"
+        if (typeof data === "string" && data.toLowerCase().includes("ping")) return true;
+        return !!(data as { ping?: number }).ping;
       case "huobi":
         return !!(data as { ping?: number }).ping;
       case "bitmex":
@@ -899,6 +961,16 @@ export class MultiExchangeWebSocket {
 
   private handleReconnect(source: PriceSource): void {
     const attempts = this.reconnectAttempts.get(source) || 0;
+    
+    // For BingX, switch to REST polling after 3 failed WebSocket attempts
+    // This is needed because BingX WebSocket is often blocked by CORS in browsers
+    if (source === "bingx" && attempts >= 3 && !this.restFallbackSources.has(source)) {
+      console.log(`[${source}] Switching to REST polling mode after ${attempts} failed WebSocket attempts`);
+      this.restFallbackSources.add(source);
+      this.startRestPolling(source);
+      return;
+    }
+    
     if (attempts < this.maxReconnectAttempts) {
       // Exponential backoff with max delay of 60 seconds
       const delay = Math.min(this.reconnectDelay * Math.pow(2, attempts), 60000);
@@ -908,6 +980,64 @@ export class MultiExchangeWebSocket {
         this.reconnectAttempts.set(source, attempts + 1);
         this.connect(source);
       }, delay);
+    }
+  }
+
+  // REST polling fallback for exchanges where WebSocket is blocked
+  private async startRestPolling(source: PriceSource): Promise<void> {
+    console.log(`[${source}] Starting REST polling mode`);
+    this.connectionStatus.set(source, "connected");
+    
+    // Poll immediately
+    await this.fetchPricesViaRest(source);
+    
+    // Then poll every 5 seconds
+    const interval = setInterval(async () => {
+      await this.fetchPricesViaRest(source);
+    }, 5000);
+    
+    this.restPollIntervals.set(source, interval);
+  }
+
+  private async fetchPricesViaRest(source: PriceSource): Promise<void> {
+    try {
+      // Use internal API route for BingX
+      const symbols = this.symbols.map(s => {
+        if (s.includes("-")) return s;
+        return s.replace("USDT", "-USDT");
+      }).join(",");
+      
+      const response = await fetch(`/api/prices/${source}?symbols=${symbols}&market=futures`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.success && data.prices) {
+        Object.entries(data.prices).forEach(([symbol, priceData]) => {
+          const p = priceData as { price: number; change24h: number; high24h: number; low24h: number; volume24h: number };
+          this.updatePrice(source, symbol, {
+            symbol,
+            price: p.price,
+            change24h: p.change24h,
+            high24h: p.high24h,
+            low24h: p.low24h,
+            volume24h: p.volume24h,
+          });
+        });
+      }
+    } catch (error) {
+      console.error(`[${source}] REST polling error:`, error);
+    }
+  }
+
+  private stopRestPolling(source: PriceSource): void {
+    const interval = this.restPollIntervals.get(source);
+    if (interval) {
+      clearInterval(interval);
+      this.restPollIntervals.delete(source);
     }
   }
 
@@ -972,6 +1102,8 @@ export class MultiExchangeWebSocket {
 
   disconnect(source: PriceSource): void {
     this.stopPingInterval(source);
+    this.stopRestPolling(source);
+    this.restFallbackSources.delete(source);
     const ws = this.sockets.get(source);
     if (ws) {
       ws.close();
@@ -981,6 +1113,8 @@ export class MultiExchangeWebSocket {
 
   disconnectAll(): void {
     this.pingIntervals.forEach((_, source) => this.stopPingInterval(source));
+    this.restPollIntervals.forEach((_, source) => this.stopRestPolling(source));
+    this.restFallbackSources.clear();
     this.sockets.forEach((ws) => ws.close());
     this.sockets.clear();
   }
