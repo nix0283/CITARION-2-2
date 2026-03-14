@@ -2,7 +2,7 @@
 
 External documentation from trading platforms, exchanges, and charting libraries.
 
-**Total Files:** 3,659 markdown documents
+**Total Files:** 3,667 markdown documents
 
 ---
 
@@ -30,7 +30,7 @@ External documentation from trading platforms, exchanges, and charting libraries
 
 | Knowledge Base | Files | Source |
 |----------------|-------|--------|
-| **Cornix** | 237 | [cornix.io](https://cornix.io/) |
+| **Cornix** | 245 | [cornix.io](https://cornix.io/) |
 
 ---
 
@@ -57,48 +57,17 @@ kb/
 │   ├── trick.md         # Best Practices & Tips
 │   ├── broker.md        # Broker Program API
 │   ├── agent.md         # Agent Program API
-│   ├── repos/           # SDK repositories (Rust, TypeScript, Python)
-│   │   ├── fairwic-okx-rs/    # Rust SDK
-│   │   ├── rotyang-okx-rs/    # Rust SDK (alternative)
-│   │   ├── npm-okx-api/       # TypeScript SDK
-│   │   ├── pypi-okx-sdk/      # Python SDK
-│   │   └── docs-rs-okx/       # Rust docs
-│   └── media/           # Documentation images
+│   └── repos/           # SDK repositories
 │
 ├── bybit/                # Bybit Exchange API (1 file)
 │   └── README.md        # Complete API Reference
-│       # - Authentication (HMAC & RSA)
-│       # - Market Data Endpoints
-│       # - Trading Operations
-│       # - WebSocket Streams
-│       # - Position Management
-│       # - Local Order Book Management
-│       # - SDK References (Python, Node.js, Go, Java, .NET)
 │
 ├── bitget/               # Bitget Exchange API (1 file)
 │   └── README.md        # Complete API Reference
-│       # - V2 API Overview
-│       # - Spot & Futures Trading
-│       # - WebSocket Streams
-│       # - Position Management
-│       # - Local Order Book Management
-│       # - Rate Limit Best Practices
-│       # - Error Recovery Patterns
 │
 ├── bingx/                # BingX Exchange API (2 files)
-│   ├── README.md        # Complete API Reference
-│   │   # - Spot & Futures API
-│   │   # - WebSocket Streams
-│   │   # - Local Order Book Management
-│   │   # - Rate Limit Best Practices
-│   │   # - Error Recovery Patterns
+│   ├── README.md        # API Reference
 │   └── SDK_WRAPPER.md   # TypeScript SDK Implementation
-│       # - Full SDK wrapper for BingX API
-│       # - Market data methods
-│       # - Trading operations
-│       # - Position management
-│       # - WebSocket support
-│       # - Error handling
 │
 ├── tradingview/          # TradingView Platform (2,980 files)
 │   ├── Widgets/         # All widgets
@@ -106,8 +75,7 @@ kb/
 │   ├── indicators/      # Built-in indicators
 │   ├── trading/         # Trading features
 │   ├── screener/        # Screener tools
-│   ├── financials/      # Financial data
-│   └── ...
+│   └── financials/      # Financial data
 │
 ├── pine-script/          # Pine Script Language (72 files)
 │   ├── Language/        # Syntax & types
@@ -120,27 +88,31 @@ kb/
 │
 ├── lightweight-charts/   # Lightweight Charts (76 files)
 │   ├── docs/            # API docs
-│   ├── tutorials/       # Tutorials
-│   └── screenshots/     # Documentation images
+│   └── tutorials/       # Tutorials
 │
-└── cornix/               # Cornix Bot Platform (237 files)
+└── cornix/               # Cornix Bot Platform (245 files)
     ├── getting-started/ # Account setup, API keys
     ├── trading-bots/    # Signals bot, Grid bot, DCA bot
     ├── trading-configurations/ # All trading settings
     ├── channel-admins/  # Channel management
-    ├── errors-notifications/ # Error messages & notifications
+    ├── errors-notifications/ # Error messages
     ├── account-subscription/ # Plans & billing
     ├── marketplace/     # Marketplace features
     ├── backtesting/     # Backtesting docs
     ├── demo-accounts/   # Demo trading
-    ├── trading-functionalities/ # Manual trading features
+    ├── trading-functionalities/ # Manual trading
     ├── faqs-more/       # FAQs and guides
     ├── affiliation-program/ # Affiliate program
     │
-    └── Examples/        # Signal examples (8 folders)
-        ├── Cornix_bot_control_telegram-example/
-        ├── Cornix_notifications-example/
-        └── Cornix_trading_channel-example1-6/
+    └── Examples/        # Signal examples (8 .md files)
+        ├── Cornix_bot_control_telegram-example.md
+        ├── Cornix_notifications-example.md
+        ├── Cornix_trading_channel-example1.md
+        ├── Cornix_trading_channel-example2.md
+        ├── Cornix_trading_channel-example3.md
+        ├── Cornix_trading_channel-example4.md
+        ├── Cornix_trading_channel-example5.md
+        └── Cornix_trading_channel-example6.md
 ```
 
 ---
@@ -162,27 +134,11 @@ Options:     https://eapi.binance.com
 WebSocket:   wss://stream.binance.com:9443/ws
 ```
 
-**Key Files:**
-- `authentication.md` - HMAC and RSA authentication
-- `error-codes.md` - Error code reference
-- `trading.md` - Trading operations guide
-- `websocket-streams.md` - WebSocket documentation
-
 ### OKX API
 
 **Location:** [`okx/`](./okx/)
 
 Comprehensive OKX documentation with SDKs and implementation guides.
-
-**Features:**
-- Complete REST & WebSocket API documentation
-- Multiple SDK repositories:
-  - `fairwic-okx-rs` - Rust SDK with full API support
-  - `rotyang-okx-rs` - Rust SDK with order book management
-  - `npm-okx-api` - TypeScript SDK
-  - `pypi-okx-sdk` - Python SDK
-- Local Order Book Management implementation
-- Broker & Agent program APIs
 
 **Key Endpoints:**
 ```
@@ -195,12 +151,6 @@ WebSocket:   wss://ws.okx.com:8443/ws/v5/public
 **Location:** [`bybit/`](./bybit/)
 
 Complete V5 API reference with all product lines unified.
-
-**Features:**
-- Unified V5 API for all products (Spot, Linear, Inverse, Option)
-- HMAC and RSA authentication
-- Local Order Book Management
-- Official SDKs: Python, Node.js, Go, Java, .NET
 
 **Key Endpoints:**
 ```
@@ -215,12 +165,6 @@ WebSocket:   wss://stream.bybit.com/v5/public/linear
 
 V2 API documentation for Spot and Futures trading.
 
-**Features:**
-- Unified V2 API
-- Spot, Margin, Futures support
-- Copy Trading endpoints
-- Local Order Book Management
-
 **Key Endpoints:**
 ```
 REST:        https://api.bitget.com
@@ -232,12 +176,6 @@ WebSocket:   wss://ws.bitget.com/v2/ws/public
 **Location:** [`bingx/`](./bingx/)
 
 API documentation with TypeScript SDK wrapper implementation.
-
-**Features:**
-- Spot & Standard Contract (Futures) API
-- Complete TypeScript SDK implementation
-- WebSocket market data streams
-- Local Order Book Management
 
 **Key Endpoints:**
 ```
@@ -253,27 +191,19 @@ WebSocket:   wss://open-api-swap.bingx.com/openapi/swap/v2/ws
 
 **Location:** [`tradingview/`](./tradingview/)
 
-Complete TradingView platform documentation including widgets, features, and chart types.
+Complete TradingView platform documentation.
 
 ### Pine Script
 
 **Location:** [`pine-script/`](./pine-script/)
 
-Pine Script v5/v6 programming language reference for custom indicators and strategies.
-
-**Sections:**
-- `Language/` - Syntax, types, operators
-- `Concepts/` - Strategies, alerts, timeframes
-- `Writing/` - Script development guides
-- `Visuals/` - Plots, colors, tables
-- `Errors/` - Error code reference
-- `Migration/` - Version migration guides
+Pine Script v5/v6 programming language reference.
 
 ### Lightweight Charts
 
 **Location:** [`lightweight-charts/`](./lightweight-charts/)
 
-TradingView's open-source charting library with API documentation and examples.
+TradingView's open-source charting library.
 
 **GitHub:** https://github.com/tradingview/lightweight-charts
 
@@ -285,25 +215,24 @@ TradingView's open-source charting library with API documentation and examples.
 
 **Location:** [`cornix/`](./cornix/)
 
-Cornix trading bot platform documentation - complete Help Center Knowledge Base.
+Cornix trading bot platform documentation.
 
 **Sections:**
-- `getting-started/` - Account creation, API keys for all exchanges
-- `trading-bots/` - Signals Bot, Grid Bot, DCA Bot, TradingView Bot
-- `trading-configurations/` - All trading settings (leverage, stop-loss, take-profit, etc.)
+- `getting-started/` - Account creation, API keys
+- `trading-bots/` - Signals Bot, Grid Bot, DCA Bot
+- `trading-configurations/` - Trading settings
 - `channel-admins/` - Signal channel management
-- `errors-notifications/` - Error codes and notification messages
-- `account-subscription/` - Subscription plans and billing
-- `marketplace/` - Marketplace features and statistics
-- `demo-accounts/` - Risk-free demo trading
-- `trading-functionalities/` - Manual trading features
-- `faqs-more/` - FAQs and trading guides
-- `affiliation-program/` - Affiliate program
+- `errors-notifications/` - Error codes
+- `account-subscription/` - Plans and billing
+- `marketplace/` - Marketplace features
+- `demo-accounts/` - Demo trading
+- `trading-functionalities/` - Manual trading
+- `faqs-more/` - FAQs and guides
 
-**Example Folders (8 examples):**
-- `Cornix_bot_control_telegram-example/` - Bot control via Telegram
-- `Cornix_notifications-example/` - Notification formats
-- `Cornix_trading_channel-example1-6/` - Trading channel signal formats
+**Examples (Telegram exports):**
+- `Cornix_bot_control_telegram-example.md` - Bot control commands
+- `Cornix_notifications-example.md` - Notification formats
+- `Cornix_trading_channel-example1-6.md` - Signal formats
 
 ---
 
